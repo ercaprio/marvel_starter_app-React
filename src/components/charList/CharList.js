@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Component } from 'react/cjs/react.production.min';
+
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -36,29 +37,30 @@ class CharList extends Component{
     }
 
     renderItems(arr) {
-        const items =  arr.map((item, id) => {
-            const {name, thumbnail} = item;
+        const items =  arr.map((item) => {
+            const {name, thumbnail, id} = item;
             return (
                 <li 
                     className="char__item"
-                    key={id}>
+                    key={id}
+                    onClick={() => this.props.onCharSelected(id)}>
                         <img 
                             src={thumbnail} 
                             alt={name} 
-                            style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'contain' : 'cover'}}
+                            style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
                         />
                         <div className="char__name">{item.name}</div>
                 </li>
             )
         });
-        
+
         return (
             <ul className="char__grid">
                 {items}
             </ul>
         )
     }
-
+ 
     render () {
         const {charList, loading, error} = this.state;
         

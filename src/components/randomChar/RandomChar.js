@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Component } from 'react/cjs/react.production.min';
+
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import MarvelService from '../../services/MarvelService';
@@ -21,6 +22,13 @@ class RandomChar extends Component {
         this.updateChar();
     }
 
+    onCharLoading = () => {
+        this.setState({
+            loading: true
+        })
+    }
+
+
     onCharLoaded = (char) => {
         this.setState({
             char,
@@ -37,6 +45,7 @@ class RandomChar extends Component {
 
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
+        this.onCharLoading();
         this.marvelService
             .getCharacter(id)
             .then(this.onCharLoaded)
@@ -82,7 +91,7 @@ const View = ({char}) => {
             <img src={thumbnail} 
                  alt="Random character" 
                  className="randomchar__img"
-                 style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'contain' : 'cover'}}
+                 style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
             />
             <div className="randomchar__info">
                 <p className="randomchar__name">{name}</p>
