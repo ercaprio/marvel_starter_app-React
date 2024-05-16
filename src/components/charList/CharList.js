@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Component } from 'react/cjs/react.production.min';
+import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -107,6 +108,10 @@ class CharList extends Component{
             </div>
         )
     }
+}
+
+CharList.propTypes = {
+    onCharSelected: PropTypes.func.isRequired,
 }
 
 export default CharList;
