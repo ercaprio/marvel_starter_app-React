@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { Component } from 'react/cjs/react.production.min';
@@ -110,6 +111,7 @@ const View = ({char}) => {
             <ul className="char__comics-list">
                 {
                     comics.length > 0 ? comics.map((item, i) => {
+                        if (i > 9) return;
                         return (
                             <li key={i} className="char__comics-item">
                                 {item.name}
