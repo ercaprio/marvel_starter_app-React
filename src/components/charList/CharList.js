@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Component } from 'react/cjs/react.production.min';
+import React,{ Component } from 'react/cjs/react.production.min';
 import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
@@ -17,6 +17,7 @@ class CharList extends Component{
         offset: 1546,
         charEnded: false
     };
+
 
     marvelService = new MarvelService();
 
@@ -59,14 +60,37 @@ class CharList extends Component{
         })
     }
 
+    itemRefs = [];
+
+    setRef = (ref) => {
+        this.itemRefs.push(ref);
+    }
+
+    focusOnItem = (id) => {
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRefs[id].classList.add('char__item_selected');
+        this.itemRefs[id].focus();
+    }
+
     renderItems(arr) {
-        const items =  arr.map((item) => {
+        const items =  arr.map((item, i) => {
             const {name, thumbnail, id} = item;
             return (
                 <li 
+                    tabIndex={0}
                     className="char__item"
                     key={id}
-                    onClick={() => this.props.onCharSelected(id)}>
+                    ref={this.setRef}
+                    onClick={() => {
+                        this.props.onCharSelected(id)
+                        this.focusOnItem(i);
+                    }}
+                    onKeyPress={(e) => {
+                        if (e.key === ' ' || e.key === "Enter") {
+                            this.props.onCharSelected(item.id);
+                            this.focusOnItem(i);
+                        }
+                    }}>
                         <img 
                             src={thumbnail} 
                             alt={name} 
