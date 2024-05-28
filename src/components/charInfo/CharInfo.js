@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import { Component } from 'react/cjs/react.production.min';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Spinner from '../spinner/Spinner';

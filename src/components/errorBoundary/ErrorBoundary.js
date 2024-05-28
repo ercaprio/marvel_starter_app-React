@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Component } from "react/cjs/react.development";
+import { Component } from "react";
 import ErrorMessage from "../errorMessage/ErrorMessage";
 
 class ErrorBoundary extends Component {
