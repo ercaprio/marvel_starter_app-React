@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
 
@@ -37,6 +38,8 @@ const CharList = (props) => {
         setOffset(offset => offset + 9)
         setCharEnded(ended);
     }
+ 
+    console.log('charList!');
 
     const itemRefs = useRef([]);
 
