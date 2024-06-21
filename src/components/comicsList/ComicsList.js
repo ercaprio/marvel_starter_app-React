@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-vars */
-import {useState, useEffect, useRef} from 'react';
+import {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
@@ -42,11 +42,11 @@ const ComicsList = () => {
             const {title, thumbnail, price, id} = item;
             return (
                 <li className="comics__item" key={i}>
-                    <a href="#">
+                    <Link to={`/comics/${id}`}>
                         <img src={thumbnail} alt="ultimate war" className="comics__item-img"/>
                         <div className="comics__item-name">{title}</div>
                         <div className="comics__item-price">{price}</div>
-                    </a>
+                    </Link>
                 </li>
             )
         });
