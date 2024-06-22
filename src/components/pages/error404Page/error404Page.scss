@@ -90,16 +90,7 @@ body {
     font-weight: 400;
 }
 
-.notfound a {
-    color: $main-color; 
-    font-size: 23px;
-    font-weight: 700;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: 0.2s all;
-    margin-top: 5px;
+.notfound button {
+    margin-top: 15px;
 }
 
-.notfound a:hover {
-    color: darken($main-color, 20%); 
-}

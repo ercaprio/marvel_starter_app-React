@@ -1,4 +1,5 @@
-import { useParams, Link } from 'react-router-dom';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useParams, useNavigate } from 'react-router-dom';
 import {useState, useEffect} from 'react';
 
 import Spinner from '../../spinner/Spinner';
@@ -43,6 +44,8 @@ const SingleComicPage = () => {
 const View = ({comic}) => {
     const {title, description, pageCount, thumbnail, language, price} = comic;
 
+    const navigate = useNavigate();
+
     return (
         <div className="single-comic">
             <img src={thumbnail} alt={title} className="single-comic__img"/>
@@ -53,7 +56,7 @@ const View = ({comic}) => {
                 <p className="single-comic__descr">Language: {language}</p>
                 <div className="single-comic__price">{price}</div>
             </div>
-            <Link to={'/comics'} className="single-comic__back">Back to all</Link>
+            <div onClick={() => navigate(-1)} className="single-comic__back">Back to all</div>
         </div>
     )
 }

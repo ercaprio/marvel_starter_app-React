@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/static/css/main.1469d6fa.css",
-    "main.js": "/static/js/main.a34b770c.js",
+    "main.css": "/static/css/main.dfc8da5d.css",
+    "main.js": "/static/js/main.6fc402ab.js",
     "static/media/vision.png": "/static/media/vision.067d4ae1936d64a577ce.png",
     "static/media/mjolnir.png": "/static/media/mjolnir.61f31e1809f12183a524.png",
     "static/media/Avengers.png": "/static/media/Avengers.4065c8f9c94e3d8b039a.png",
     "static/media/error.gif": "/static/media/error.42292aa12b6bc303ce99.gif",
     "static/media/Avengers_logo.png": "/static/media/Avengers_logo.9eaf219344d83362e830.png",
     "index.html": "/index.html",
-    "main.1469d6fa.css.map": "/static/css/main.1469d6fa.css.map",
-    "main.a34b770c.js.map": "/static/js/main.a34b770c.js.map"
+    "main.dfc8da5d.css.map": "/static/css/main.dfc8da5d.css.map",
+    "main.6fc402ab.js.map": "/static/js/main.6fc402ab.js.map"
   },
   "entrypoints": [
-    "static/css/main.1469d6fa.css",
-    "static/js/main.a34b770c.js"
+    "static/css/main.dfc8da5d.css",
+    "static/js/main.6fc402ab.js"
   ]
 }

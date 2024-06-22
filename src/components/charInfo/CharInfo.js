@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -81,8 +82,9 @@ const View = ({char}) => {
                         if (i > 9) return;
                         return (
                             <li key={i} className="char__comics-item">
-                                {item.name}
+                                <Link to={`/comics/${item.resourceURI.slice(-5)}`}>{item.name}</Link>
                             </li>
+
                         )
                     }) : 'There are no comics for this character.'
                 }

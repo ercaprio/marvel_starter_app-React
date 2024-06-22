@@ -38,8 +38,6 @@ const CharList = (props) => {
         setOffset(offset => offset + 9)
         setCharEnded(ended);
     }
- 
-    console.log('charList!');
 
     const itemRefs = useRef([]);
 
