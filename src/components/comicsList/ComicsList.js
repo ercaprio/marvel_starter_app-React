@@ -2,7 +2,9 @@
 
 import {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
+import { CSSTransition,  TransitionGroup} from 'react-transition-group';
 
+import useVisibleItems from '../../hooks/useVisibleItemsDelay.hook';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -15,6 +17,7 @@ const ComicsList = () => {
     const [offset, setOffset] = useState(150);
     const [comicsEnded, setComicsEnded] = useState(false);
 
+    const visibleItems = useVisibleItems(comicsList);
     const {loading, error, getAllComics} = useMarvelService();
 
     useEffect(() => {
@@ -40,27 +43,29 @@ const ComicsList = () => {
     }
 
     function renderItems(arr) {
-        const items =  arr.map((item, i) => {
-            const {title, thumbnail, price, id} = item;
-            return (
-                <li className="comics__item" key={i}>
-                    <Link to={`/comics/${id}`}>
-                        <img src={thumbnail} alt="ultimate war" className="comics__item-img"/>
-                        <div className="comics__item-name">{title}</div>
-                        <div className="comics__item-price">{price}</div>
-                    </Link>
-                </li>
-            )
-        });
+        const duration = 300;
 
         return (
-            <ul className="comics__grid">
-                {items}
-            </ul>
+            <TransitionGroup component="ul" className="comics__grid">
+                {arr.map((item, i) => {
+                    const {title, thumbnail, price, id} = item;
+                    return (
+                        <CSSTransition key={id} timeout={duration} classNames="comics">
+                            <li className="comics__item" key={i}>
+                                <Link to={`/comics/${id}`}>
+                                    <img src={thumbnail} alt="ultimate war" className="comics__item-img"/>
+                                    <div className="comics__item-name">{title}</div>
+                                    <div className="comics__item-price">{price}</div>
+                                </Link>
+                            </li>
+                        </CSSTransition>
+                    )
+                })}
+            </TransitionGroup>
         )
     }
 
-    const items = renderItems(comicsList);
+    const items = renderItems(visibleItems);
     
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading ? <Spinner/> : null;

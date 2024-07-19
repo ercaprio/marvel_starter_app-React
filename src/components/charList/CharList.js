@@ -1,7 +1,10 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+import { CSSTransition,  TransitionGroup} from 'react-transition-group';
 
+import useVisibleItems from '../../hooks/useVisibleItemsDelay.hook';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -14,7 +17,8 @@ const CharList = (props) => {
     const [newItemLoading, setNewItemLoading] = useState(false);
     const [offset, setOffset] = useState(210);
     const [charEnded, setCharEnded] = useState(false);
-
+  
+    const visibleItems = useVisibleItems(charList);
     const {loading, error, getAllCharacters} = useMarvelService();
 
     useEffect(() => {
@@ -48,42 +52,43 @@ const CharList = (props) => {
     }
 
     function renderItems(arr) {
-        const items =  arr.map((item, i) => {
-            const {name, thumbnail, id} = item;
-            return (
-                <li 
-                    tabIndex={0}
-                    className="char__item"
-                    key={id}
-                    ref={el => itemRefs.current[i] = el}
-                    onClick={() => {
-                        props.onCharSelected(id)
-                        focusOnItem(i);
-                    }}
-                    onKeyDown={(e) => {
-                        if (e.key === ' ' || e.key === "Enter") {
-                            props.onCharSelected(item.id);
-                           focusOnItem(i);
-                        }
-                    }}>
-                        <img 
-                            src={thumbnail} 
-                            alt={name} 
-                            style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
-                        />
-                        <div className="char__name">{item.name}</div>
-                </li>
-            )
-        });
+        const duration = 300;
 
         return (
-            <ul className="char__grid">
-                {items}
-            </ul>
+            <TransitionGroup component="ul" className="char__grid">
+                {arr.map((item, i) => {
+                    const {name, thumbnail, id} = item;
+                    return (
+                        <CSSTransition key={id} timeout={duration} classNames="char">
+                            <li tabIndex={0}
+                                className="char__item"
+                                key={id}
+                                ref={el => itemRefs.current[i] = el}
+                                onClick={() => {
+                                    props.onCharSelected(id)
+                                    focusOnItem(i);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === ' ' || e.key === "Enter") {
+                                        props.onCharSelected(item.id);
+                                    focusOnItem(i);
+                                    }
+                                }}>
+                                    <img 
+                                        src={thumbnail} 
+                                        alt={name} 
+                                        style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
+                                    />
+                                    <div className="char__name">{item.name}</div>
+                            </li>
+                        </CSSTransition>
+                    )
+                })}
+            </TransitionGroup>
         )
     }
      
-    const items = renderItems(charList);
+    const items = renderItems(visibleItems);
 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading ? <Spinner/> : null;
