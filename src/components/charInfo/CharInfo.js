@@ -1,6 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable array-callback-return */
 import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
+
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -37,7 +41,7 @@ const CharInfo = (props) => {
     const skeleton =  char || loading || error ? null : <Skeleton/>;
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error || !char) ? <View char={char}/> : null;
+    const content = !(loading || error || !char) ? <View char={char} show={props.charId}/> : null;
 
     return (
         <div className="char__info">
@@ -50,46 +54,55 @@ const CharInfo = (props) => {
 
 }
 
-const View = ({char}) => {
+const View = ({char, show}) => {
     const {name, description, thumbnail, homepage, wiki, comics} = char;
+
+    const duration = 300;
+
     return (
-        <>
-             <div className="char__basics">
-                    <img 
-                        src={thumbnail} 
-                        alt={name}
-                        style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
-                    />
-                    <div>
-                        <div className="char__info-name">{name}</div>
-                        <div className="char__btns">
-                            <a href={homepage} className="button button__main">
-                                <div className="inner">homepage</div>
-                            </a>
-                            <a href={wiki} className="button button__secondary">
-                                <div className="inner">Wiki</div>
-                            </a>
+        <CSSTransition
+            in={show} 
+            timeout={duration} 
+            classNames={'char__info'}
+        >
+            <div>
+                <div className="char__basics">
+                        <img 
+                            src={thumbnail} 
+                            alt={name}
+                            style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
+                        />
+                        <div>
+                            <div className="char__info-name">{name}</div>
+                            <div className="char__btns">
+                                <a href={homepage} className="button button__main">
+                                    <div className="inner">homepage</div>
+                                </a>
+                                <a href={wiki} className="button button__secondary">
+                                    <div className="inner">Wiki</div>
+                                </a>
+                            </div>
                         </div>
                     </div>
+                <div className="char__descr">
+                    {description}
                 </div>
-            <div className="char__descr">
-                {description}
-            </div>
-            <div className="char__comics">Comics:</div>
-            <ul className="char__comics-list">
-                {
-                    comics.length > 0 ? comics.map((item, i) => {
-                        if (i > 9) return;
-                        return (
-                            <li key={i} className="char__comics-item">
-                                <Link to={`/comics/${item.resourceURI.slice(-5)}`}>{item.name}</Link>
-                            </li>
+                <div className="char__comics">Comics:</div>
+                <ul className="char__comics-list">
+                    {
+                        comics.length > 0 ? comics.map((item, i) => {
+                            if (i > 9) return null;
+                            return (
+                                <li key={i} className="char__comics-item">
+                                    <Link to={`/comics/${item.resourceURI.slice(-5)}`}>{item.name}</Link>
+                                </li>
 
-                        )
-                    }) : 'There are no comics for this character.'
-                }
-            </ul>
-        </>  
+                            )
+                        }) : 'There are no comics for this character.'
+                    }
+                </ul>
+            </div>
+        </CSSTransition>  
     )
 }
 

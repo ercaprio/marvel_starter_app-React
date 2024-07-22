@@ -1,6 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
 
 import AppHeader from "../appHeader/AppHeader";
 import Spinner from "../spinner/Spinner";
@@ -8,42 +7,29 @@ import Spinner from "../spinner/Spinner";
 const Error404Page = lazy(() => import('../pages/error404Page/Error404Page'));
 const MainPage = lazy(() => import('../pages/MainPage'));
 const ComicsPage = lazy(() => import('../pages/ComicsPage'));
+const SinglePage = lazy(() => import('../pages/SinglePage'));
 const SingleComicPage = lazy(() => import('../pages/singleComicPage/SingleComicPage'));
+const SingleCharacterPage = lazy(() => import('../pages/singleCharacterPage/SingleCharacterPage'));
 
 const App = () => {
+
     return (
         <Router>
             <div className="app">
                 <AppHeader />
                 <main>
                     <Suspense fallback={<Spinner />}>
-                        <AnimatedRoutes />
+                        <Routes>
+                            <Route path="/" element={<MainPage />} />
+                            <Route path="/comics" element={<ComicsPage />} />
+                            <Route path="/comics/:comicId" element={<SinglePage Component={SingleComicPage} dataType='comic'/>} />
+                            <Route path="/characters/:id" element={<SinglePage Component={SingleCharacterPage} dataType='character'/> }/>
+                            <Route path="*" element={<Error404Page />} />
+                        </Routes>
                     </Suspense>
                 </main>
             </div>
         </Router>
-    );
-};
-
-const AnimatedRoutes = () => {
-    const location = useLocation();
-
-    return (
-        <SwitchTransition>
-            <CSSTransition
-                key={location.key}
-                classNames="page"
-                timeout={300}
-                unmountOnExit
-            >
-                <Routes location={location}>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/comics" element={<ComicsPage />} />
-                    <Route path="/comics/:comicId" element={<SingleComicPage />} />
-                    <Route path="*" element={<Error404Page />} />
-                </Routes>
-            </CSSTransition>
-        </SwitchTransition>
     );
 };
 

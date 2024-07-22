@@ -1,5 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from 'react';
-import { SwitchTransition, CSSTransition } from 'react-transition-group';
 
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -62,11 +62,8 @@ const RandomChar = () => {
 const View = ({char, animationKey}) => {
     const {name, description, thumbnail, homepage, wiki} = char;
 
-    
     return (
-        <SwitchTransition>
-            <CSSTransition classNames="randomchar" key={animationKey} timeout={{ enter: 500, exit: 0 }} >
-                <div className="randomchar__block">
+        <div className="randomchar__block">
                     <img src={thumbnail} 
                         alt="Random character" 
                         className="randomchar__img"
@@ -87,8 +84,6 @@ const View = ({char, animationKey}) => {
                         </div>
                     </div>
                 </div>
-            </CSSTransition>
-        </SwitchTransition>
     )
 }
 
