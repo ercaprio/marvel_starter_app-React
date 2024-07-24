@@ -15,7 +15,7 @@ const CharList = (props) => {
 
     const [charList, setCharList] = useState([]);
     const [newItemLoading, setNewItemLoading] = useState(false);
-    const [offset, setOffset] = useState(210);
+    const [offset, setOffset] = useState(285);
     const [charEnded, setCharEnded] = useState(false);
   
     const visibleItems = useVisibleItems(charList);
@@ -77,7 +77,7 @@ const CharList = (props) => {
                                     <img 
                                         src={thumbnail} 
                                         alt={name} 
-                                        style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
+                                        style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif' ? 'fill' : 'cover'}}
                                     />
                                     <div className="char__name">{item.name}</div>
                             </li>

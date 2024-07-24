@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Helmet } from "react-helmet";
 
 import './singleComicPage.scss';
@@ -6,6 +6,8 @@ import './singleComicPage.scss';
 const SingleComicPage = ({data}) => {
 
     const {title, description, pageCount, thumbnail, language, price} = data;
+
+    const navigate = useNavigate();
 
     return (
         <div className="single-comic">
@@ -24,7 +26,7 @@ const SingleComicPage = ({data}) => {
                 <p className="single-comic__descr">Language: {language}</p>
                 <div className="single-comic__price">{price}</div>
             </div>
-            <Link to="/comics" className="single-comic__back">Back to all</Link>
+            <div onClick={() => navigate(-1)} className="single-comic__back">Back to all</div>
         </div>
     )
 }

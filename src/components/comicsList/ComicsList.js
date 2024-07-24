@@ -14,7 +14,7 @@ import './comicsList.scss';
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]);
     const [newItemLoading, setNewItemLoading] = useState(false);
-    const [offset, setOffset] = useState(150);
+    const [offset, setOffset] = useState(285);
     const [comicsEnded, setComicsEnded] = useState(false);
 
     const visibleItems = useVisibleItems(comicsList);
@@ -29,6 +29,8 @@ const ComicsList = () => {
         getAllComics(offset)
             .then(onComicsListLoaded)
     }
+
+    console.log(offset);
 
     const onComicsListLoaded = (newComicsList) => {
         let ended =  false;

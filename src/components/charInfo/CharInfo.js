@@ -70,7 +70,7 @@ const View = ({char, show}) => {
                         <img 
                             src={thumbnail} 
                             alt={name}
-                            style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? 'fill' : 'cover'}}
+                            style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif' ? 'fill' : 'cover'}}
                         />
                         <div>
                             <div className="char__info-name">{name}</div>
