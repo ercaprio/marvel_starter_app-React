@@ -1,15 +1,17 @@
+/* eslint-disable no-unreachable */
+/* eslint-disable default-case */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable array-callback-return */
 import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { CSSTransition } from 'react-transition-group';
 
-
-import Spinner from '../spinner/Spinner';
-import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelService from '../../services/MarvelService';
-import Skeleton from '../skeleton/Skeleton';
+import setContent from '../../utils/setContent';
+// import Spinner from '../spinner/Spinner';
+// import ErrorMessage from '../errorMessage/ErrorMessage';
+// import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
 
@@ -17,7 +19,8 @@ const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
 
-    const {loading, error, getCharacter, clearError} = useMarvelService();
+    // const {loading, error, getCharacter, clearError, process, setProcess} = useMarvelService();
+    const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar();
@@ -32,77 +35,92 @@ const CharInfo = (props) => {
         clearError();
         getCharacter(charId)
             .then(onCharLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     const onCharLoaded = (char) => {
         setChar(char);
     }
 
-    const skeleton =  char || loading || error ? null : <Skeleton/>;
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading ? <Spinner/> : null;
-    const content = !(loading || error || !char) ? <View char={char} show={props.charId}/> : null;
+    // const setContent = (process, char) => {
+    //     switch(process) {
+    //         case 'waiting': 
+    //             return <Skeleton/>;
+    //             break;
+    //         case 'loading':
+    //             return <Spinner/>;
+    //             break;
+    //         case 'confirmed':
+    //             return <View char={char}/>;
+    //             break;
+    //         case 'error':
+    //             return <ErrorMessage/>;
+    //             break;
+    //         default: 
+    //             throw new Error('Unexpected process state');
+    //     }
+    // }
+
+    // const skeleton =  char || loading || error ? null : <Skeleton/>;
+    // const errorMessage = error ? <ErrorMessage/> : null;
+    // const spinner = loading ? <Spinner/> : null;
+    // const content = !(loading || error || !char) ? <View char={char}/> : null;
 
     return (
         <div className="char__info">
-            {skeleton}
+            {/* {skeleton}
             {errorMessage}
             {spinner}
-            {content}
+            {content} */}
+            {setContent(process, View, char)}
         </div>
     )
 
 }
 
-const View = ({char, show}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
-
-    const duration = 300;
+const View = ({data}) => {
+    const {name, description, thumbnail, homepage, wiki, comics} = data;
 
     return (
-        <CSSTransition
-            in={show} 
-            timeout={duration} 
-            classNames={'char__info'}
-        >
-            <div>
-                <div className="char__basics">
-                        <img 
-                            src={thumbnail} 
-                            alt={name}
-                            style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif' ? 'fill' : 'cover'}}
-                        />
-                        <div>
-                            <div className="char__info-name">{name}</div>
-                            <div className="char__btns">
-                                <a href={homepage} className="button button__main">
-                                    <div className="inner">homepage</div>
-                                </a>
-                                <a href={wiki} className="button button__secondary">
-                                    <div className="inner">Wiki</div>
-                                </a>
-                            </div>
+
+        <>
+            <div className="char__basics">
+                    <img 
+                        src={thumbnail} 
+                        alt={name}
+                        style={{objectFit: thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' || thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/f/60/4c002e0305708.gif' ? 'fill' : 'cover'}}
+                    />
+                    <div>
+                        <div className="char__info-name">{name}</div>
+                        <div className="char__btns">
+                            <a href={homepage} className="button button__main">
+                                <div className="inner">homepage</div>
+                            </a>
+                            <a href={wiki} className="button button__secondary">
+                                <div className="inner">Wiki</div>
+                            </a>
                         </div>
                     </div>
-                <div className="char__descr">
-                    {description}
                 </div>
-                <div className="char__comics">Comics:</div>
-                <ul className="char__comics-list">
-                    {
-                        comics.length > 0 ? comics.map((item, i) => {
-                            if (i > 9) return null;
-                            return (
-                                <li key={i} className="char__comics-item">
-                                    <Link to={`/comics/${item.resourceURI.slice(-5)}`}>{item.name}</Link>
-                                </li>
-
-                            )
-                        }) : 'There are no comics for this character.'
-                    }
-                </ul>
+            <div className="char__descr">
+                {description}
             </div>
-        </CSSTransition>  
+            <div className="char__comics">Comics:</div>
+            <ul className="char__comics-list">
+                {
+                    comics.length > 0 ? comics.map((item, i) => {
+                        if (i > 9) return null;
+                        return (
+                            <li key={i} className="char__comics-item">
+                                <Link to={`/comics/${item.resourceURI.slice(-5)}`}>{item.name}</Link>
+                            </li>
+
+                        )
+                    }) : 'There are no comics for this character.'
+                }
+            </ul>
+        </>
+
     )
 }
 

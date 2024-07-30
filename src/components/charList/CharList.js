@@ -1,3 +1,4 @@
+/* eslint-disable no-unreachable */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {useState, useEffect, useRef} from 'react';
@@ -11,6 +12,25 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 
 import './charList.scss';
 
+const setContent = (process, Component, newItemLoading) => {
+    switch(process) {
+        case 'waiting': 
+            return <Spinner/>;
+            break;
+        case 'loading':
+            return newItemLoading ? <Component/> : <Spinner/>;
+            break;
+        case 'confirmed':
+            return <Component/>;
+            break;
+        case 'error':
+            return <ErrorMessage/>;
+            break;
+        default: 
+            throw new Error('Unexpected process state');
+    }
+}
+
 const CharList = (props) => {
 
     const [charList, setCharList] = useState([]);
@@ -19,7 +39,8 @@ const CharList = (props) => {
     const [charEnded, setCharEnded] = useState(false);
   
     const visibleItems = useVisibleItems(charList);
-    const {loading, error, getAllCharacters} = useMarvelService();
+    // const {loading, error, getAllCharacters, process, setProcess} = useMarvelService();
+    const {getAllCharacters, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
@@ -29,6 +50,7 @@ const CharList = (props) => {
         initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset)
             .then(onCharListLoaded)
+            .then(() => setProcess('confirmed'))
     }
 
     const onCharListLoaded = (newCharList) => {
@@ -88,16 +110,17 @@ const CharList = (props) => {
         )
     }
      
-    const items = renderItems(visibleItems);
+    // const items = renderItems(visibleItems);
 
-    const errorMessage = error ? <ErrorMessage/> : null;
-    const spinner = loading && !newItemLoading ? <Spinner/> : null;
+    // const errorMessage = error ? <ErrorMessage/> : null;
+    // const spinner = loading && !newItemLoading ? <Spinner/> : null;
 
     return ( 
         <div className="char__list">
-            {errorMessage}
+            {/* {errorMessage}
             {spinner}
-            {items}
+            {items} */}
+            {setContent(process, () => renderItems(visibleItems), newItemLoading)}
             <button 
                 className="button button__main button__long"
                 disabled={newItemLoading}
