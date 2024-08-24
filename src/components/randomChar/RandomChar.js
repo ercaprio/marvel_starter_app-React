@@ -1,9 +1,5 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
 import {useEffect, useState} from 'react';
 
-// import Spinner from '../spinner/Spinner';
-// import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelService from '../../services/MarvelService';
 import setContent from '../../utils/setContent';
 
@@ -14,11 +10,11 @@ const RandomChar = () => {
 
     const [char, setChar] = useState({});
 
-    // const {loading, error, getCharacter, clearError, process, setProcess} = useMarvelService();
     const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onCharLoaded = (char) => {
@@ -33,16 +29,8 @@ const RandomChar = () => {
             .then(() => setProcess('confirmed'))
     }
 
-    // const errorMessage = error ? <ErrorMessage/> : null;
-    // const spinner = loading ? <Spinner/> : null;
-    // const content = !(loading || error) ? <View char={char}/> : null;
-
-
     return (
         <div className="randomchar">
-            {/* {errorMessage}
-            {spinner}
-            {content} */}
             {setContent(process, View, char)}
             <div className="randomchar__static">
                 <p className="randomchar__title">

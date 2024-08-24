@@ -1,17 +1,9 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable default-case */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable array-callback-return */
 import {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import useMarvelService from '../../services/MarvelService';
 import setContent from '../../utils/setContent';
-// import Spinner from '../spinner/Spinner';
-// import ErrorMessage from '../errorMessage/ErrorMessage';
-// import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
 
@@ -19,11 +11,11 @@ const CharInfo = (props) => {
 
     const [char, setChar] = useState(null);
 
-    // const {loading, error, getCharacter, clearError, process, setProcess} = useMarvelService();
     const {getCharacter, clearError, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         updateChar();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.charId])
 
     const updateChar = () => {
@@ -41,30 +33,6 @@ const CharInfo = (props) => {
     const onCharLoaded = (char) => {
         setChar(char);
     }
-
-    // const setContent = (process, char) => {
-    //     switch(process) {
-    //         case 'waiting': 
-    //             return <Skeleton/>;
-    //             break;
-    //         case 'loading':
-    //             return <Spinner/>;
-    //             break;
-    //         case 'confirmed':
-    //             return <View char={char}/>;
-    //             break;
-    //         case 'error':
-    //             return <ErrorMessage/>;
-    //             break;
-    //         default: 
-    //             throw new Error('Unexpected process state');
-    //     }
-    // }
-
-    // const skeleton =  char || loading || error ? null : <Skeleton/>;
-    // const errorMessage = error ? <ErrorMessage/> : null;
-    // const spinner = loading ? <Spinner/> : null;
-    // const content = !(loading || error || !char) ? <View char={char}/> : null;
 
     return (
         <div className="char__info">

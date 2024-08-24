@@ -1,12 +1,7 @@
-/* eslint-disable no-unreachable */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { CSSTransition,  TransitionGroup} from 'react-transition-group';
 
-import useVisibleItems from '../../hooks/useVisibleItemsDelay.hook';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
@@ -17,16 +12,12 @@ const setContent = (process, Component, newItemLoading) => {
     switch(process) {
         case 'waiting': 
             return <Spinner/>;
-            break;
         case 'loading':
             return newItemLoading ? <Component/> : <Spinner/>;
-            break;
         case 'confirmed':
             return <Component/>;
-            break;
         case 'error':
             return <ErrorMessage/>;
-            break;
         default: 
             throw new Error('Unexpected process state');
     }
@@ -35,15 +26,14 @@ const setContent = (process, Component, newItemLoading) => {
 const ComicsList = () => {
     const [comicsList, setComicsList] = useState([]);
     const [newItemLoading, setNewItemLoading] = useState(false);
-    const [offset, setOffset] = useState(285);
+    const [offset, setOffset] = useState(300);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const visibleItems = useVisibleItems(comicsList);
-    // const {loading, error, getAllComics, process, setProcess} = useMarvelService();
     const {getAllComics, process, setProcess} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const onRequest = (offset, initial) => {
@@ -53,8 +43,6 @@ const ComicsList = () => {
             .then(() => setProcess('confirmed'))
     }
 
-    console.log(offset);
-
     const onComicsListLoaded = (newComicsList) => {
         let ended =  false;
         if (newComicsList.length < 8) {
@@ -63,7 +51,7 @@ const ComicsList = () => {
 
         setComicsList(comicsList => [...comicsList, ...newComicsList]);
         setNewItemLoading(false);
-        setOffset(offset => offset + 8)
+        setOffset(offset + 8)
         setComicsEnded(ended);
     }
 
@@ -90,17 +78,9 @@ const ComicsList = () => {
         )
     }
 
-    // const items = renderItems(visibleItems);
-    
-    // const errorMessage = error ? <ErrorMessage/> : null;
-    // const spinner = loading && !newItemLoading ? <Spinner/> : null;
-
     return (
         <div className="comics__list">
-            {/* {errorMessage}
-            {spinner}
-            {items} */}
-            {setContent(process, () => renderItems(visibleItems), newItemLoading)}
+            {setContent(process, () => renderItems(comicsList), newItemLoading)}
             <button className="button button__main button__long"
                      disabled={newItemLoading}
                      style={{'display': comicsEnded ? 'none' : 'block'}}
